@@ -1,72 +1,118 @@
-﻿@model NorthwindWebMvc.Models.Home
+@model NorthwindWebMvc.Models.Home
 
 @{
-    ViewData["Title"] = "Northwind Management";
+    ViewData["Title"] = "Northwind Portal de Gestión";
 }
 
-<!-- ===== HERO ===== -->
-<section class="hero">
+<!-- ===== HEADER EJECUTIVO ===== -->
+<div class="dashboard-header">
     <div class="container">
-        <h1>Bienvenido a <span style="color:#0056b3;">Northwind Management</span></h1>
-        <p>Gestiona tus productos, clientes, transportistas y más, desde un entorno moderno y eficiente.</p>
-        <p class="lead mt-4 text-secondary">
-            Northwind Management te permite optimizar la administración de inventarios y recursos con facilidad,
-            seguridad y estilo.
-        </p>
-    </div>
-</section>
-
-<!-- ===== CONTADORES ===== -->
-<div class="container stats text-center my-5">
-    <div class="row g-4">
-
-        <div class="col-md-3">
-            <div class="card shadow-sm py-4">
-                <h3 class="counter">@Model.TotalProductos</h3>
-                <p>Productos</p>
+        <div class="d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div>
+                <h1 class="dashboard-title mb-1">Panel de Control</h1>
+                <p class="dashboard-subtitle mb-0">Bienvenido de nuevo, Administrador. Resumen del estado del sistema.</p>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+                <span class="badge bg-white text-secondary border px-3 py-2 fs-7 fw-medium rounded-pill">
+                    <i class="bi bi-calendar3 me-1 text-primary"></i> <span id="currentDate"></span>
+                </span>
+                <select class="form-select form-select-sm border-secondary-subtle rounded-pill bg-white px-3" style="width: auto;">
+                    <option selected>Histórico General</option>
+                    <option>Este Mes</option>
+                    <option>Último Trimestre</option>
+                </select>
             </div>
         </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm py-4">
-                <h3 class="counter">@Model.TotalClientes</h3>
-                <p>Clientes</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm py-4">
-                <h3 class="counter">@Model.TotalTransportistas</h3>
-                <p>Transportistas</p>
-            </div>
-        </div>
-
-        <div class="col-md-3">
-            <div class="card shadow-sm py-4">
-                <h3 class="counter">@Model.TotalProveedores</h3>
-                <p>Proveedores</p>
-            </div>
-        </div>
-
     </div>
 </div>
 
-<!-- ===== GRÁFICOS ===== -->
-<div class="container my-5">
-    <div class="row g-4">
+<div class="container mb-5">
+    <!-- ===== TARJETAS DE ESTADÍSTICAS ===== -->
+    <div class="row g-4 mb-4">
 
+        <!-- Productos -->
+        <div class="col-md-3">
+            <div class="stat-card primary">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Productos</div>
+                        <h3 class="stat-value counter" data-target="@Model.TotalProductos">0</h3>
+                    </div>
+                    <div class="icon-shape icon-shape-primary">
+                        <i class="bi bi-box-seam fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Clientes -->
+        <div class="col-md-3">
+            <div class="stat-card info">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Clientes</div>
+                        <h3 class="stat-value counter" data-target="@Model.TotalClientes">0</h3>
+                    </div>
+                    <div class="icon-shape icon-shape-info">
+                        <i class="bi bi-people fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transportistas -->
+        <div class="col-md-3">
+            <div class="stat-card indigo">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Transportistas</div>
+                        <h3 class="stat-value counter" data-target="@Model.TotalTransportistas">0</h3>
+                    </div>
+                    <div class="icon-shape icon-shape-indigo">
+                        <i class="bi bi-truck fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Proveedores -->
+        <div class="col-md-3">
+            <div class="stat-card slate">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <div class="stat-label">Proveedores</div>
+                        <h3 class="stat-value counter" data-target="@Model.TotalProveedores">0</h3>
+                    </div>
+                    <div class="icon-shape icon-shape-slate">
+                        <i class="bi bi-building fs-4"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ===== GRÁFICOS ===== -->
+    <div class="row g-4 mb-4">
+        
+        <!-- Distribución Dona -->
         <div class="col-md-6">
-            <div class="card shadow-sm p-4 h-100">
-                <h5 class="text-center mb-3">Distribución general</h5>
+            <div class="content-card">
+                <div class="content-card-header">
+                    <h5 class="content-card-title">Distribución General de Datos</h5>
+                </div>
                 <div class="chart-container">
                     <canvas id="graficoDona"></canvas>
                 </div>
             </div>
         </div>
 
+        <!-- Gráfico de Barras -->
         <div class="col-md-6">
-            <div class="card shadow-sm p-4 h-100">
-                <h5 class="text-center mb-3">Totales por entidad</h5>
+            <div class="content-card">
+                <div class="content-card-header">
+                    <h5 class="content-card-title">Totales por Tipo de Entidad</h5>
+                </div>
                 <div class="chart-container">
                     <canvas id="graficoBarras"></canvas>
                 </div>
@@ -74,13 +120,108 @@
         </div>
 
     </div>
-</div>
 
+    <!-- ===== ALERTAS DE INVENTARIO Y ACCESOS RÁPIDOS ===== -->
+    <div class="row g-4">
+        
+        <!-- Alertas de Stock Bajo -->
+        <div class="col-md-8">
+            <div class="content-card">
+                <div class="content-card-header d-flex justify-content-between align-items-center">
+                    <h5 class="content-card-title">Alerta de Inventario Crítico</h5>
+                    <span class="badge bg-danger bg-opacity-10 text-danger rounded-pill px-2.5 py-1 fs-8 fw-semibold">
+                        Stock menor o igual a 10 unidades
+                    </span>
+                </div>
+                <div class="p-3">
+                    @if (ViewBag.ProductosBajoStock != null && ((List<NorthwindWebMvc.Models.Product>)ViewBag.ProductosBajoStock).Count > 0)
+                    {
+                        <div class="table-responsive">
+                            <table class="table table-hover table-clean mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Producto</th>
+                                        <th>Stock</th>
+                                        <th>Precio Unitario</th>
+                                        <th class="text-end">Acción</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var prod in (List<NorthwindWebMvc.Models.Product>)ViewBag.ProductosBajoStock)
+                                    {
+                                        <tr>
+                                            <td class="fw-semibold">@prod.ProductName</td>
+                                            <td>
+                                                <span class="badge badge-alert">
+                                                    @prod.UnitsInStock unidades
+                                                </span>
+                                            </td>
+                                            <td>S/. @prod.UnitPriceDisplay</td>
+                                            <td class="text-end">
+                                                <a class="btn btn-sm btn-outline-primary py-0" href="@Url.Action("Edit", "Product", new { id = prod.ProductID })" title="Editar Producto">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="p-4 text-center text-muted">
+                            <i class="bi bi-check-circle text-success fs-3 d-block mb-2"></i>
+                            <span>Todos los productos tienen stock suficiente.</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- Accesos Rápidos -->
+        <div class="col-md-4">
+            <div class="content-card">
+                <div class="content-card-header">
+                    <h5 class="content-card-title">Acciones Rápidas</h5>
+                </div>
+                <div class="p-3 d-flex flex-column gap-2">
+                    <a class="quick-action-btn" href="@Url.Action("Create", "Product")">
+                        <i class="bi bi-box-seam-fill"></i>
+                        <span>Registrar Nuevo Producto</span>
+                    </a>
+                    <a class="quick-action-btn" href="@Url.Action("Index", "Customer")">
+                        <i class="bi bi-people-fill"></i>
+                        <span>Gestionar Clientes</span>
+                    </a>
+                    <a class="quick-action-btn" href="@Url.Action("BetweenDates", "OrderGrpc")">
+                        <i class="bi bi-calendar-event-fill"></i>
+                        <span>Consultar Pedidos</span>
+                    </a>
+                    <a class="quick-action-btn" href="@Url.Action("Index", "Supplier")">
+                        <i class="bi bi-building-fill"></i>
+                        <span>Ver Proveedores</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <!-- ===== CHART.JS ===== -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
+    // Fecha actual para el panel ejecutivo
+    document.addEventListener("DOMContentLoaded", () => {
+        const dateElement = document.getElementById("currentDate");
+        if (dateElement) {
+            const opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            dateElement.innerText = new Date().toLocaleDateString('es-ES', opciones);
+        }
+    });
+
     const totales = {
         productos: @Model.TotalProductos,
         clientes: @Model.TotalClientes,
@@ -95,40 +236,55 @@
         totales.proveedores
     ];
 
+    // Colores corporativos sobrios (Slate, Blues, Indigo)
     const coloresGraficos = [
-        '#2563eb', // azul intenso
-        '#0ea5e9', // celeste
-        '#6366f1', // índigo
-        '#64748b'  // gris azulado
+        '#1e3a8a', // Azul Marino
+        '#0ea5e9', // Celeste Ejecutivo
+        '#6366f1', // Índigo Muted
+        '#64748b'  // Pizarra
     ];
 
+    // Gráfico Dona
     new Chart(document.getElementById('graficoDona'), {
         type: 'doughnut',
         data: {
             labels: ['Productos', 'Clientes', 'Transportistas', 'Proveedores'],
             datasets: [{
                 data: valores,
-                backgroundColor: coloresGraficos
+                backgroundColor: coloresGraficos,
+                borderWidth: 2,
+                borderColor: '#ffffff'
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             plugins: {
-                legend: { position: 'bottom' }
+                legend: { 
+                    position: 'bottom',
+                    labels: {
+                        boxWidth: 12,
+                        padding: 15,
+                        font: {
+                            family: 'Segoe UI',
+                            size: 11
+                        }
+                    }
+                }
             }
         }
     });
 
-
+    // Gráfico de Barras
     new Chart(document.getElementById('graficoBarras'), {
         type: 'bar',
         data: {
             labels: ['Productos', 'Clientes', 'Transportistas', 'Proveedores'],
             datasets: [{
-                label: 'Oculto',
                 data: valores,
-                backgroundColor: coloresGraficos
+                backgroundColor: coloresGraficos,
+                borderRadius: 6,
+                maxBarThickness: 45
             }]
         },
         options: {
@@ -136,42 +292,33 @@
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    display: false
+                    display: false // Oculta la leyenda del dataset, evitando mostrar nombres como "Oculto"
                 }
-        },
+            },
             scales: {
-                y: { beginAtZero: true }
+                y: { 
+                    beginAtZero: true,
+                    grid: {
+                        color: '#f1f5f9'
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Segoe UI'
+                        }
+                    }
+                },
+                x: {
+                    grid: {
+                        display: false
+                    },
+                    ticks: {
+                        font: {
+                            family: 'Segoe UI',
+                            weight: 'bold'
+                        }
+                    }
+                }
             }
         }
-    });
-
-    function obtenerClaseColor(valor) {
-        if (valor >= 50) return 'text-success'; // verde
-        if (valor >= 20) return 'text-warning'; // amarillo
-        return 'text-danger';                   // rojo
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        document.querySelectorAll(".counter").forEach(counter => {
-            const target = +counter.innerText;
-            counter.innerText = "0";
-
-            // aplicar color según valor final
-            counter.classList.add(obtenerClaseColor(target));
-
-            const step = target / 60;
-
-            const update = () => {
-                let value = +counter.innerText;
-                if (value < target) {
-                    counter.innerText = Math.ceil(value + step);
-                    requestAnimationFrame(update);
-                } else {
-                    counter.innerText = target;
-                }
-            };
-
-            update();
-        });
     });
 </script>

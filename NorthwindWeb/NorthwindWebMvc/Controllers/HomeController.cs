@@ -1,7 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NorthwindWebMvc.Models;
 using System.Diagnostics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace NorthwindWebMvc.Controllers
 {
@@ -24,6 +26,7 @@ namespace NorthwindWebMvc.Controllers
             }
 
             Home model = new Home();
+            List<Product> productosBajoStock = new List<Product>();
 
             using (var client = new HttpClient())
             {
@@ -37,8 +40,25 @@ namespace NorthwindWebMvc.Controllers
                     string apiResponse = await response.Content.ReadAsStringAsync();
                     model = JsonConvert.DeserializeObject<Home>(apiResponse);
                 }
+
+                // Obtener productos con bajo stock (menor o igual a 10 unidades)
+                HttpResponseMessage prodResponse = await client.GetAsync("api/Product/getProductos");
+                if (prodResponse.IsSuccessStatusCode)
+                {
+                    string prodApiResponse = await prodResponse.Content.ReadAsStringAsync();
+                    var todosProductos = JsonConvert.DeserializeObject<List<Product>>(prodApiResponse);
+                    if (todosProductos != null)
+                    {
+                        productosBajoStock = todosProductos
+                            .Where(p => p.UnitsInStock.HasValue && p.UnitsInStock.Value <= 10)
+                            .OrderBy(p => p.UnitsInStock.Value)
+                            .Take(5)
+                            .ToList();
+                    }
+                }
             }
 
+            ViewBag.ProductosBajoStock = productosBajoStock;
             return View(model);
         }
 
