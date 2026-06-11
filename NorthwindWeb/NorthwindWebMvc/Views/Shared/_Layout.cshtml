@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/css/crud.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/home/index.css" asp-append-version="true" />
 </head>
-<body>
+<body class="d-flex flex-column min-vh-100">
     @if (Context.Session.GetString("AdminOriginalUsuario") != null)
     {
         <div class="alert alert-warning text-center m-0 rounded-0 py-2 d-flex align-items-center justify-content-center" style="z-index: 1050; position: relative;">
@@ -93,7 +93,7 @@
             </div>
         </nav>
     </header>
-    <div>
+    <div class="flex-grow-1">
         <main role="main">
             @RenderBody()
         </main>
