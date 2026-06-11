@@ -20,11 +20,6 @@ namespace NorthwindWebMvc.Controllers
 
         public async Task<IActionResult> Index()
         {
-            if (HttpContext.Session.GetString("usuario") == null)
-            {
-                return RedirectToAction("Login", "Account");
-            }
-
             Home model = new Home();
             List<Product> productosBajoStock = new List<Product>();
 
