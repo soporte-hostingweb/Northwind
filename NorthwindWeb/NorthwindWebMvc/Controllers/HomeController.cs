@@ -36,7 +36,6 @@ namespace NorthwindWebMvc.Controllers
                     model = JsonConvert.DeserializeObject<Home>(apiResponse);
                 }
 
-                // Obtener productos con bajo stock (menor o igual a 10 unidades)
                 HttpResponseMessage prodResponse = await client.GetAsync("api/Product/getProductos");
                 if (prodResponse.IsSuccessStatusCode)
                 {

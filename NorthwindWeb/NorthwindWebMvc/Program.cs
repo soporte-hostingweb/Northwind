@@ -1,9 +1,7 @@
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// AGREGAR ESTO
 builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddSession(options =>
@@ -15,7 +13,6 @@ builder.Services.AddSession(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
@@ -27,7 +24,6 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
-// AGREGAR ESTO
 app.UseSession();
 
 app.UseAuthorization();

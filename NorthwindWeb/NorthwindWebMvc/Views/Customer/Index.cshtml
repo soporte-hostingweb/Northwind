@@ -48,7 +48,6 @@
                 </div>
             </form>
 
-            @* Mensajes *@
             @if (TempData["mensaje"] != null)
             {
                 <div class="alert alert-info alert-dismissible fade show m-3">
@@ -128,7 +127,6 @@
                     </table>
                 </div>
 
-                @* PAGINACIÓN *@
                 <nav aria-label="Page navigation" class="mt-3">
                     <ul class="pagination justify-content-center">
                         <li class="page-item @(Model.PageNumber == 1 ? "disabled" : "")">
