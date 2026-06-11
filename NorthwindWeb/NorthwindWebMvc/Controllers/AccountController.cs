@@ -17,6 +17,10 @@ namespace NorthwindWebMvc.Controllers
         [HttpGet]
         public IActionResult Login()
         {
+            if (HttpContext.Session.GetString("usuario") != null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
             return View();
         }
 
