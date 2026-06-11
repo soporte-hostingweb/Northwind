@@ -1,4 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
+using Microsoft.Data.SqlClient;
 using NorthwindWebApi.Models;
 using NorthwindWebApi.Repositorio.Interfaces;
 using System.Data;
@@ -28,7 +28,7 @@ namespace NorthwindWebApi.Repositorio.DAO
             {
                 cn.Open();
 
-                string sql = @"SELECT NombreUsuario, Rol
+                string sql = @"SELECT NombreUsuario, Rol, CustomerID, SupplierID
                                FROM Usuarios
                                WHERE NombreUsuario = @NombreUsuario
                                AND Clave = @Clave
@@ -47,6 +47,8 @@ namespace NorthwindWebApi.Repositorio.DAO
                             response.Mensaje = "Login correcto";
                             response.NombreUsuario = dr["NombreUsuario"].ToString();
                             response.Rol = dr["Rol"].ToString();
+                            response.CustomerID = dr["CustomerID"] != DBNull.Value ? dr["CustomerID"].ToString() : null;
+                            response.SupplierID = dr["SupplierID"] != DBNull.Value ? Convert.ToInt32(dr["SupplierID"]) : null;
                         }
                     }
                 }

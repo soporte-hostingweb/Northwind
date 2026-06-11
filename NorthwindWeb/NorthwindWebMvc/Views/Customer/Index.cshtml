@@ -1,4 +1,4 @@
-﻿@model NorthwindWebMvc.Models.PagedList<NorthwindWebMvc.Models.Customer>
+@model NorthwindWebMvc.Models.PagedList<NorthwindWebMvc.Models.Customer>
 
 @{
     ViewData["Title"] = "Clientes";
@@ -108,6 +108,18 @@
                                                class="btn btn-sm btn-outline-info me-2">
                                                 <i class="bi bi-eye"></i>
                                             </a>
+
+                                            @if (Context.Session.GetString("rol") == "Admin")
+                                            {
+                                                <form asp-controller="Account" asp-action="ImpersonateUser" method="post" class="d-inline">
+                                                    <input type="hidden" name="customerId" value="@item.CustomerID" />
+                                                    <input type="hidden" name="userName" value="@item.ContactName" />
+                                                    <input type="hidden" name="supplierId" value="" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-success me-2" title="Ver como Cliente">
+                                                        <i class="bi bi-person-fill-check"></i>
+                                                    </button>
+                                                </form>
+                                            }
                                         </td>
                                     </tr>
                                 }

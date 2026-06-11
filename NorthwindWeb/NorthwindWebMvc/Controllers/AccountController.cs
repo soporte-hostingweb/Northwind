@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using NorthwindWebMvc.Models;
 using System.Text;
@@ -51,6 +51,14 @@ namespace NorthwindWebMvc.Controllers
             {
                 HttpContext.Session.SetString("usuario", respuesta.NombreUsuario);
                 HttpContext.Session.SetString("rol", respuesta.Rol);
+                if (!string.IsNullOrEmpty(respuesta.CustomerID))
+                {
+                    HttpContext.Session.SetString("customerID", respuesta.CustomerID);
+                }
+                if (respuesta.SupplierID.HasValue)
+                {
+                    HttpContext.Session.SetInt32("supplierID", respuesta.SupplierID.Value);
+                }
 
                 return RedirectToAction("Index", "Home");
             }
@@ -63,6 +71,56 @@ namespace NorthwindWebMvc.Controllers
         {
             HttpContext.Session.Clear();
             return RedirectToAction("Login", "Account");
+        }
+
+        [HttpPost]
+        public IActionResult ImpersonateUser(string customerId, string supplierId, string userName)
+        {
+            var userRole = HttpContext.Session.GetString("rol");
+            if (userRole == "Admin")
+            {
+                HttpContext.Session.SetString("AdminOriginalUsuario", HttpContext.Session.GetString("usuario"));
+                HttpContext.Session.SetString("AdminOriginalRol", "Admin");
+
+                HttpContext.Session.SetString("usuario", userName);
+                HttpContext.Session.SetString("rol", "Cliente");
+
+                if (!string.IsNullOrEmpty(customerId))
+                {
+                    HttpContext.Session.SetString("customerID", customerId);
+                }
+                else
+                {
+                    HttpContext.Session.Remove("customerID");
+                }
+
+                if (!string.IsNullOrEmpty(supplierId) && int.TryParse(supplierId, out int supId))
+                {
+                    HttpContext.Session.SetInt32("supplierID", supId);
+                }
+                else
+                {
+                    HttpContext.Session.Remove("supplierID");
+                }
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public IActionResult StopImpersonating()
+        {
+            var originalAdmin = HttpContext.Session.GetString("AdminOriginalUsuario");
+            if (!string.IsNullOrEmpty(originalAdmin))
+            {
+                HttpContext.Session.SetString("usuario", originalAdmin);
+                HttpContext.Session.SetString("rol", HttpContext.Session.GetString("AdminOriginalRol") ?? "Admin");
+
+                HttpContext.Session.Remove("AdminOriginalUsuario");
+                HttpContext.Session.Remove("AdminOriginalRol");
+                HttpContext.Session.Remove("customerID");
+                HttpContext.Session.Remove("supplierID");
+            }
+            return RedirectToAction("Index", "Home");
         }
     }
 }

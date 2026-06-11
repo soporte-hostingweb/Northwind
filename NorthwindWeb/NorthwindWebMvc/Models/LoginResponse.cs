@@ -1,4 +1,4 @@
-﻿namespace NorthwindWebMvc.Models
+namespace NorthwindWebMvc.Models
 {
     public class LoginResponse
     {
@@ -6,5 +6,7 @@
         public string Mensaje { get; set; }
         public string NombreUsuario { get; set; }
         public string Rol { get; set; }
+        public string? CustomerID { get; set; }
+        public int? SupplierID { get; set; }
     }
 }
