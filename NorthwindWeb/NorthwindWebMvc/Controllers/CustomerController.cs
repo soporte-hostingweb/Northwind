@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Newtonsoft.Json;
 using NorthwindWebMvc.Models;
@@ -8,6 +8,15 @@ namespace NorthwindWebMvc.Controllers
 {
     public class CustomerController : Controller
     {
+        public override void OnActionExecuting(Microsoft.AspNetCore.Mvc.Filters.ActionExecutingContext context)
+        {
+            if (context.HttpContext.Session.GetString("rol") != "Admin")
+            {
+                context.Result = RedirectToAction("Login", "Account");
+            }
+            base.OnActionExecuting(context);
+        }
+
         private async Task<List<Cargo>> CargarCargos()
         {
             List<Cargo> listaCargos = new List<Cargo>();
